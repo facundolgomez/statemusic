@@ -1,3 +1,4 @@
+import requests
 
 menu_active = True
 
@@ -9,3 +10,4 @@ while menu_active:
 
 print("Terminó el programa")
 
+requests.get()
