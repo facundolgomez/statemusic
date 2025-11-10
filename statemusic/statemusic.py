@@ -1,13 +1,31 @@
 import requests
+import os
+from dotenv import load_dotenv
 
-menu_active = True
 
-while menu_active:
-	print("Welcome")
-	user_input = int(input("Ingrese un numero: "))
-	if user_input == 2:
-		menu_active = False
+load_dotenv(dotenv_path="credentials.env")
 
-print("Terminó el programa")
+TOKEN = None
 
-requests.get()
+url_token = "https://accounts.spotify.com/api/token"
+
+headers = {
+    "Content-Type": "application/x-www-form-urlencoded"
+}
+
+data = {
+	"grant_type": "client_credentials",
+	"client_id": os.getenv("SPOTIFY_CLIENT_ID"),
+	"client_secret": os.getenv("SPOTIFY_CLIENT_SECRET")
+}
+
+def get_token():
+	global TOKEN
+	response = requests.post(url_token, headers=headers, data=data)
+	result = response.json()
+	TOKEN = result.get("access_token")
+
+
+get_token()
+
+print(TOKEN)
